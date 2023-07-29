@@ -50,6 +50,7 @@ def predict():
             # Predict using the model
             is_helmet_prob = model.predict(np.array([face.reshape((48,48,1))]))[0]
             is_helmet = np.argmax(is_helmet_prob)
+          
             if is_helmet == 0:
                 msg_helmet = "Surprise"
             elif is_helmet == 4:
@@ -62,9 +63,16 @@ def predict():
                 msg_helmet = "Neutral"
 
             msg_helmet += " ({:.1f})%".format(is_helmet_prob[is_helmet] * 100)
-            print(msg_helmet)
+    
 
-            return jsonify({'msg_helmet': msg_helmet})
+            return jsonify({'msg_helmet': msg_helmet,
+                            'graph' : {'Surprise': is_helmet_prob[0] * 100,
+                                     'Neutral' : is_helmet_prob[1] * 100,
+                                     'Anger' : is_helmet_prob[2] * 100,
+                                     'Happy' : is_helmet_prob[3] * 100,
+                                     'Sad' : is_helmet_prob[4] * 100
+                                     }
+                                     })
         else:
             return jsonify({'msg_helmet': 'Failed to load the image.'})
     else:
