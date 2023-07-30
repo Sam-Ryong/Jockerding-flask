@@ -38,7 +38,13 @@ def predict():
             detected = face_detection.detectMultiScale(gray, **settings)
 
             if len(detected) == 0:
-                return jsonify({'msg_helmet': 'No face detected.'})
+                return jsonify({'msg_helmet': 'No face detected.',
+                            'graph' : {'Surprise': 0,
+                                     'Neutral' : 0,
+                                     'Anger' : 0,
+                                     'Happy' : 0,
+                                     'Sad' : 0
+                                     }})
             
             for x, y, w, h in detected:
                 cv.rectangle(img, (x, y), (x+w, y+h), (245, 135, 66), 2)
@@ -74,9 +80,23 @@ def predict():
                                      }
                                      })
         else:
-            return jsonify({'msg_helmet': 'Failed to load the image.'})
+            return jsonify({'msg_helmet': 'Failed to load the image.',
+                            'graph' : {'Surprise': 0,
+                                     'Neutral' : 0,
+                                     'Anger' : 0,
+                                     'Happy' : 0,
+                                     'Sad' : 0
+                                     }
+                                     })
     else:
-        return jsonify({'msg_helmet': 'Invalid image_path.'})
+        return jsonify({'msg_helmet': 'Invalid image_path.',
+                            'graph' : {'Surprise': 0,
+                                     'Neutral' : 0,
+                                     'Anger' : 0,
+                                     'Happy' : 0,
+                                     'Sad' : 0
+                                     }
+                                     })
 
 @app.route('/send_data', methods=['POST'])
 def receive_data():
