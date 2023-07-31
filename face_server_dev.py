@@ -38,7 +38,7 @@ def predict():
             detected = face_detection.detectMultiScale(gray, **settings)
 
             if len(detected) == 0:
-                return jsonify({'msg_helmet': 'No face detected.',
+                return jsonify({'msg_helmet': 0,
                             'graph' : {'Surprise': 0,
                                      'Neutral' : 0,
                                      'Anger' : 0,
@@ -56,19 +56,8 @@ def predict():
             # Predict using the model
             is_helmet_prob = model.predict(np.array([face.reshape((48,48,1))]))[0]
             is_helmet = np.argmax(is_helmet_prob)
-          
-            if is_helmet == 0:
-                msg_helmet = "Surprise"
-            elif is_helmet == 4:
-                msg_helmet = "Sad"
-            elif is_helmet == 2:
-                msg_helmet = "Anger"
-            elif is_helmet == 3:
-                msg_helmet = "Happy"
-            else:
-                msg_helmet = "Neutral"
 
-            msg_helmet += " ({:.1f})%".format(is_helmet_prob[is_helmet] * 100)
+            msg_helmet = int(is_helmet_prob[is_helmet] * 100)
     
 
             return jsonify({'msg_helmet': msg_helmet,
