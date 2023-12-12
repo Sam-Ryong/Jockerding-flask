@@ -10,10 +10,8 @@ settings = {
 	'minNeighbors': 5, 
 	'minSize': (50, 50)
 }
-#size = (224, 224)
+
 capture = cv.VideoCapture(0)
-#capture.set(cv.CAP_PROP_FRAME_WIDTH, 320)
-#capture.set(cv.CAP_PROP_FRAME_HEIGHT, 240)
 input_size = (224, 224)
 
 model = tf.keras.models.load_model('C:\\Users\\Hong Seung Pyo\\model\\keras_model.h5', compile=False)
@@ -24,8 +22,6 @@ if True:
     while True:
         
         ret, img = capture.read()
-        #img = np.frombuffer(binary_data, dtype=np.uint8)
-        #img = cv.imdecode(img, cv.IMREAD_COLOR)
         gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
         model_frame = cv.resize(gray, input_size)
         model_frame = np.expand_dims(model_frame, axis=0) / 255.0
